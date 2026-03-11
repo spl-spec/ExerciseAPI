@@ -1,0 +1,55 @@
+﻿@model CalculationData
+
+<form method="post" asp-controller="Operations" asp-action="SendData">
+    <div class="form-row">
+        <input type="number" asp-for="Value1" style="height:30px" placeholder="Value1" />
+        <select name="function" id="function" asp-for="Function" style="height:30px">
+            <option value="sum">Sum</option>
+            <option value="multiply">Multiply</option>
+        </select>
+        <input type="number" asp-for="Value2" style="height:30px" placeholder="Value2" />
+        <button type="submit" style="margin-bottom:0">Calculate</button>
+    </div>
+
+    @if (Model != null && Model.Result != "")
+    {
+        <p style="font-size:20px">@Model.Result</p>
+    }
+
+    <p style="font-size:20px; color:darkblue; margin-top:15px">Last 3 operation records</p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Number1</th>
+                <th>Number2</th>
+                <th>Operation</th>
+                <th>Result</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model != null && Model.calculationLast3History != null)
+                foreach (var item in Model.calculationLast3History)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Number1</td>
+                    <td>@item.Number2</td>
+                    <td>@item.Operation</td>
+                    <td>@item.Result</td>
+                    <td>@item.CreatedAt</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="form-row">
+        <p style="font-size:20px; color:darkblue">Number of operation records for current month:</p>
+        @if (Model != null && Model.calculationMonthCount != 0)
+        {
+            <p style="font-size:20px">@Model.calculationMonthCount</p>
+        }
+    </div>
+</form>
